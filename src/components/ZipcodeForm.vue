@@ -51,49 +51,7 @@ const emit = defineEmits<{
 			:loading="isFetching"
 		/>
 
-		<!-- Sección: País -->
-		<div class="section-header mb-4">
-			<div class="d-flex align-center gap-2">
-				<v-avatar color="blue-lighten-1" size="32" rounded="lg">
-					<v-icon size="18" color="white">mdi-earth</v-icon>
-				</v-avatar>
-				<div>
-					<div
-						class="text-subtitle-1 font-weight-bold text-grey-darken-3"
-					>
-						Información del País
-					</div>
-					<div class="text-caption text-grey">
-						Campos de solo lectura
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<v-row>
-			<v-col cols="12" sm="8">
-				<v-text-field
-					:model-value="data?.country ?? ''"
-					label="País"
-					prepend-inner-icon="mdi-flag-outline"
-					variant="outlined"
-					rounded="lg"
-					disabled
-					class="disabled-field"
-				/>
-			</v-col>
-			<v-col cols="12" sm="4">
-				<v-text-field
-					:model-value="data?.countryAbbreviation ?? ''"
-					label="Abreviación"
-					prepend-inner-icon="mdi-alphabetical"
-					variant="outlined"
-					rounded="lg"
-					disabled
-					class="disabled-field"
-				/>
-			</v-col>
-		</v-row>
+		
 
 		<!-- Sección: Lugares -->
 		<div class="section-header mb-4 mt-2">
@@ -217,6 +175,52 @@ const emit = defineEmits<{
 				</v-row>
 			</v-card-text>
 		</v-card>
+
+		<!-- Sección: País -->
+		<div class="section-header mb-4">
+			<div class="d-flex align-center gap-2">
+				<v-avatar color="blue-lighten-1" size="32" rounded="lg">
+					<v-icon size="18" color="white">mdi-earth</v-icon>
+				</v-avatar>
+				<div>
+					<div
+						class="text-subtitle-1 font-weight-bold text-grey-darken-3"
+					>
+						Información del País
+					</div>
+					<div class="text-caption text-grey">
+						Campos de solo lectura
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<v-row>
+			<v-col cols="12" sm="8">
+				<v-text-field
+					:model-value="data?.country ?? ''"
+					label="País"
+					prepend-inner-icon="mdi-flag-outline"
+					variant="outlined"
+					rounded="lg"
+					disabled
+					class="disabled-field"
+				/>
+			</v-col>
+			<v-col cols="12" sm="4">
+				<v-text-field
+					:model-value="data?.countryAbbreviation ?? ''"
+					label="Abreviación"
+					prepend-inner-icon="mdi-alphabetical"
+					variant="outlined"
+					rounded="lg"
+					disabled
+					class="disabled-field"
+				/>
+			</v-col>
+		</v-row>
+
+		
 	</v-card>
 </template>
 

@@ -2,28 +2,27 @@
 import { ref } from 'vue'
 import ZipcodeTab from './components/ZipcodeTab.vue'
 import { VueQueryDevtools } from '@tanstack/vue-query-devtools';
+import { v4 as uuidv4 } from 'uuid';
 
 interface TabItem {
-  id: number
+  id: string
   zipcode: string
 }
 
-let nextId = 1
-
-function createEmptyTab(id: number): TabItem {
-  return { id, zipcode: '' }
+function createEmptyTab(id: string, zipcode: string = ''): TabItem {
+  return { id, zipcode }
 }
 
-const tabs = ref<TabItem[]>([createEmptyTab(nextId++)])
-const activeTab = ref<number>(tabs.value[0].id)
+const tabs = ref<TabItem[]>([createEmptyTab(uuidv4(),'35201'), createEmptyTab(uuidv4(),'20001'), createEmptyTab(uuidv4(),'35201'), createEmptyTab(uuidv4(),'19104')])
+const activeTab = ref<string>(tabs.value[0].id)
 
 function addTab() {
-  const tab = createEmptyTab(nextId++)
+  const tab = createEmptyTab(uuidv4())
   tabs.value.push(tab)
   activeTab.value = tab.id
 }
 
-function removeTab(id: number) {
+function removeTab(id: string) {
   if (tabs.value.length <= 1) return
   const index = tabs.value.findIndex(t => t.id === id)
   tabs.value.splice(index, 1)
@@ -32,7 +31,7 @@ function removeTab(id: number) {
   }
 }
 
-function updateTabZipcode(id: number, zipcode: string) {
+function updateTabZipcode(id: string, zipcode: string) {
   const tab = tabs.value.find(t => t.id === id)
   if (tab) tab.zipcode = zipcode
 }
