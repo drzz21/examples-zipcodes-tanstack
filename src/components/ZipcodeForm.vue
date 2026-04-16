@@ -1,44 +1,19 @@
 <script setup lang="ts">
-import { zipCodeQueries } from '../api/queries/zipcodes.queries';
-import {computed} from 'vue';
+import type { ZipcodeData } from '../types/zipcode.types';
 
-export interface PlaceInfo {
-	placeName: string;
-	longitude: string;
-	latitude: string;
-	state: string;
-	stateAbbreviation: string;
-}
-
-export interface ZipcodeData {
-	postCode: string;
-	country: string;
-	countryAbbreviation: string;
-	places: PlaceInfo[];
-}
-
-const props = defineProps<{
-	modelValue: ZipcodeData;
+defineProps<{
+	zipcode: string;
+	data?: ZipcodeData;
+	isFetching: boolean;
+	isError: boolean;
 }>();
-
-
 
 const emit = defineEmits<{
-	'update:modelValue': [value: ZipcodeData];
+	'update:zipcode': [value: string];
 }>();
-
-const postCode = computed(() => props.modelValue.postCode);
-
-const { zipCodeDataQuery } = zipCodeQueries(postCode);
-
-function onPostCodeInput(value: string) {
-	emit('update:modelValue', { ...props.modelValue, postCode: value });
-}
 </script>
 
 <template>
-	codigo: {{ modelValue.postCode }}
-	{{ zipCodeDataQuery.data }}
 	<v-card elevation="0" rounded="lg" color="transparent">
 		<!-- Sección: Código Postal -->
 		<div class="section-header mb-4">
@@ -62,8 +37,8 @@ function onPostCodeInput(value: string) {
 		</div>
 
 		<v-text-field
-			:model-value="modelValue.postCode"
-			@update:model-value="onPostCodeInput"
+			:model-value="zipcode"
+			@update:model-value="emit('update:zipcode', $event)"
 			label="Código Postal"
 			prepend-inner-icon="mdi-magnify"
 			variant="outlined"
@@ -73,6 +48,7 @@ function onPostCodeInput(value: string) {
 			persistent-hint
 			class="mb-6"
 			rounded="lg"
+			:loading="isFetching"
 		/>
 
 		<!-- Sección: País -->
@@ -97,7 +73,7 @@ function onPostCodeInput(value: string) {
 		<v-row>
 			<v-col cols="12" sm="8">
 				<v-text-field
-					:model-value="modelValue.country"
+					:model-value="data?.country ?? ''"
 					label="País"
 					prepend-inner-icon="mdi-flag-outline"
 					variant="outlined"
@@ -108,7 +84,7 @@ function onPostCodeInput(value: string) {
 			</v-col>
 			<v-col cols="12" sm="4">
 				<v-text-field
-					:model-value="modelValue.countryAbbreviation"
+					:model-value="data?.countryAbbreviation ?? ''"
 					label="Abreviación"
 					prepend-inner-icon="mdi-alphabetical"
 					variant="outlined"
@@ -133,12 +109,12 @@ function onPostCodeInput(value: string) {
 					>
 						Lugares
 						<v-chip
-							v-if="modelValue.places.length > 0"
+							v-if="data?.places?.length"
 							size="x-small"
 							color="teal"
 							class="ml-2"
 						>
-							{{ modelValue.places.length }}
+							{{ data.places.length }}
 						</v-chip>
 					</div>
 					<div class="text-caption text-grey">
@@ -150,7 +126,7 @@ function onPostCodeInput(value: string) {
 
 		<!-- Place cards -->
 		<v-card
-			v-for="(place, index) in modelValue.places"
+			v-for="(place, index) in (data?.places ?? [])"
 			:key="index"
 			variant="outlined"
 			rounded="lg"

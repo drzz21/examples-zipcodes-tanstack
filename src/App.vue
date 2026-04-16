@@ -1,34 +1,17 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import ZipcodeForm from './components/ZipcodeForm.vue'
-import type { ZipcodeData } from './components/ZipcodeForm.vue'
+import ZipcodeTab from './components/ZipcodeTab.vue'
 import { VueQueryDevtools } from '@tanstack/vue-query-devtools';
 
 interface TabItem {
   id: number
-  data: ZipcodeData
+  zipcode: string
 }
 
 let nextId = 1
 
 function createEmptyTab(id: number): TabItem {
-  return {
-    id,
-    data: {
-      postCode: '',
-      country: '',
-      countryAbbreviation: '',
-      places: [
-        {
-          placeName: '',
-          longitude: '',
-          latitude: '',
-          state: '',
-          stateAbbreviation: '',
-        },
-      ],
-    },
-  }
+  return { id, zipcode: '' }
 }
 
 const tabs = ref<TabItem[]>([createEmptyTab(nextId++)])
@@ -49,13 +32,13 @@ function removeTab(id: number) {
   }
 }
 
-function updateTabData(id: number, data: ZipcodeData) {
+function updateTabZipcode(id: number, zipcode: string) {
   const tab = tabs.value.find(t => t.id === id)
-  if (tab) tab.data = data
+  if (tab) tab.zipcode = zipcode
 }
 
 function tabLabel(tab: TabItem, index: number): string {
-  return tab.data.postCode.trim() ? tab.data.postCode : `Pestaña ${index + 1}`
+  return tab.zipcode.trim() ? tab.zipcode : `Pestaña ${index + 1}`
 }
 </script>
 
@@ -140,9 +123,9 @@ function tabLabel(tab: TabItem, index: number): string {
               :value="tab.id"
             >
               <div class="pa-6">
-                <ZipcodeForm
-                  :model-value="tab.data"
-                  @update:model-value="updateTabData(tab.id, $event)"
+                <ZipcodeTab
+                  :zipcode="tab.zipcode"
+                  @update:zipcode="updateTabZipcode(tab.id, $event)"
                 />
               </div>
             </v-tabs-window-item>
