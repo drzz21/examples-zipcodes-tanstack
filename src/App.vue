@@ -13,7 +13,7 @@ function createEmptyTab(id: string, zipcode: string = ''): TabItem {
   return { id, zipcode }
 }
 
-const tabs = ref<TabItem[]>([createEmptyTab(uuidv4(),'35201'), createEmptyTab(uuidv4(),'20001'), createEmptyTab(uuidv4(),'35201'), createEmptyTab(uuidv4(),'19104')])
+const tabs = ref<TabItem[]>([createEmptyTab(uuidv4(),'01067'), createEmptyTab(uuidv4(),'20095'), createEmptyTab(uuidv4(),'70173')])
 const activeTab = ref<string>(tabs.value[0].id)
 
 function addTab() {
